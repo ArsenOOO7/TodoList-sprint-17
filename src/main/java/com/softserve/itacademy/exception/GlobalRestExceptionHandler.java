@@ -19,7 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.persistence.EntityNotFoundException;
 
-@RestControllerAdvice(annotations = RestController.class)
+@RestControllerAdvice
 @Order(1)
 @Slf4j
 public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler{

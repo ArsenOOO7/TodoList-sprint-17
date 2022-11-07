@@ -24,8 +24,6 @@ public class ToDoDto {
 
     private LocalDateTime createdAt;
 
-    @NotNull
-    @Min(1L)
     private long ownerId;
 
     private List<Task> tasks;

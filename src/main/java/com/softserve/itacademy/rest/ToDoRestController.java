@@ -38,11 +38,11 @@ public class ToDoRestController {
     }
 
 
-    @GetMapping("/all/{userId}")
-    @PreAuthorize("principal.id == #userId || hasAuthority('ADMIN')")
-    public ResponseEntity<List<TodoPreviewDto>> readAll(@PathVariable long userId){
-        return ResponseEntity.ok(todoService.getByUserId(userId).stream().map(TodoPreviewDto::new).collect(Collectors.toList()));
-    }
+//    @GetMapping("/all/{userId}")
+//    @PreAuthorize("principal.id == #userId || hasAuthority('ADMIN')")
+//    public ResponseEntity<List<TodoPreviewDto>> readAll(@PathVariable long userId){
+//        return ResponseEntity.ok(todoService.getByUserId(userId).stream().map(TodoPreviewDto::new).collect(Collectors.toList()));
+//    }
 
     @PostMapping({"/create/{ownerId}", ""})
     @PreAuthorize("#ownerId == principal.id || hasAuthority('ADMIN')")
@@ -50,7 +50,7 @@ public class ToDoRestController {
         toDoDto.setCreatedAt(LocalDateTime.now());
         ToDo toDo = ToDoTransformer.convertToEntity(
                 toDoDto,
-                userService.readById(toDoDto.getOwnerId()) // TODO: ownerId from principal.id
+                userService.readById(ownerId) // TODO: ownerId from principal.id
         );
         toDo = todoService.create(toDo);
         toDoDto = ToDoTransformer.convertToDto(toDo);
@@ -83,11 +83,11 @@ public class ToDoRestController {
         return true;
     }
 
-    @GetMapping("/all/user/{userId}")
+    @GetMapping("/all/{userId}")
     @PreAuthorize("#userId == principal.id || hasAuthority('ADMIN')")
-    public List<ToDoDto> getAll(@PathVariable long userId) {
+    public List<TodoPreviewDto> getAll(@PathVariable long userId) {
         return todoService.getByUserId(userId).stream()
-                .map(ToDoTransformer::convertToDto)
+                .map(TodoPreviewDto::new)
                 .collect(Collectors.toList());
     }
 

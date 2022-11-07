@@ -51,6 +51,12 @@ public class UserRestController {
         return UserTransformer.convertToDto(user);
     }
 
+    @GetMapping(value = {"/", ""})
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<List<UserDto>> readAll(){
+        return ResponseEntity.ok(userService.getAll().stream().map(UserTransformer::convertToDto).collect(Collectors.toList()));
+    }
+
     @PutMapping("/{userId}")
     @PreAuthorize("#userId == principal.id || hasAuthority('ADMIN')")
     public UserDto update(@PathVariable long userId, @Valid @RequestBody UserDto userDto) {
@@ -60,7 +66,6 @@ public class UserRestController {
         User user = userService.readById(userId);
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
-        // TODO: update password
         if (user.getRole().getName().equals("ADMIN")) {
             user.setRole(roleService.readById(userDto.getRoleId()));
         }

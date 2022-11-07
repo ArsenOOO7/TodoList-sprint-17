@@ -20,11 +20,11 @@ public class TaskDto {
     @NotBlank
     private String priority;
 
-    @NotNull
-    @Min(1L)
+//    @NotNull
+//    @Min(1L)
     private long todoId;
 
-    @NotNull
-    @Min(1L)
+//    @NotNull
+//    @Min(1L)
     private long stateId;
 }
