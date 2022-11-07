@@ -33,13 +33,15 @@ public class UserDto {
     private String password;
 
     private long roleId;
+    private String roleName;
 
-    public UserDto(long id, String firstName, String lastName, String email, long roleId) {
+    public UserDto(long id, String firstName, String lastName, String email, long roleId, String roleName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = null;
         this.roleId = roleId;
+        this.roleName = roleName;
     }
 }

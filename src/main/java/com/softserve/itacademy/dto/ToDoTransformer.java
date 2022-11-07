@@ -11,16 +11,16 @@ import java.util.stream.Collectors;
 
 public class ToDoTransformer {
     public static ToDoDto convertToDto(ToDo toDo) {
-        List<Long> taskIds = new ArrayList<>();
-        if (toDo.getTasks() != null) {
-            taskIds = toDo.getTasks().stream()
-                    .map(Task::getId)
-                    .collect(Collectors.toList());
-        }
-        List<Long> collaboratorsIds = new ArrayList<>();
+//        List<Long> taskIds = new ArrayList<>();
+//        if (toDo.getTasks() != null) {
+//            taskIds = toDo.getTasks().stream()
+//                    .map(Task::getId)
+//                    .collect(Collectors.toList());
+//        }
+        List<UserDto> collaboratorsIds = new ArrayList<>();
         if (toDo.getTasks() != null) {
             collaboratorsIds = toDo.getCollaborators().stream()
-                    .map(User::getId)
+                    .map(UserTransformer::convertToDto)
                     .collect(Collectors.toList());
         }
 
@@ -29,7 +29,7 @@ public class ToDoTransformer {
                 toDo.getTitle(),
                 toDo.getCreatedAt(),
                 toDo.getOwner().getId(),
-                taskIds,
+                toDo.getTasks(),
                 collaboratorsIds
         );
     }

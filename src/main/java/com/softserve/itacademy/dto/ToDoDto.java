@@ -1,5 +1,6 @@
 package com.softserve.itacademy.dto;
 
+import com.softserve.itacademy.model.Task;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ public class ToDoDto {
     @Min(1L)
     private long ownerId;
 
-    private List<Long> tasks;
+    private List<Task> tasks;
 
-    private List<Long> collaborators;
+    private List<UserDto> collaborators;
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/task")
+@RequestMapping("/api/tasks")
 public class TaskRestController {
     private final TaskService taskService;
     private final ToDoService todoService;
@@ -26,12 +26,12 @@ public class TaskRestController {
         this.stateService = stateService;
     }
 
-    @PostMapping({"/", ""})
-//    @PreAuthorize("@toDoController.getToDoReadingLevel(#taskDto.todoId) <= 1 || hasAuthority('ADMIN')")
-    public TaskDto create(@Valid @RequestBody TaskDto taskDto) {
+    @PostMapping({"/{todoId}"})
+    @PreAuthorize("@toDoRestController.getToDoReadingLevel(#todoId) <= 1 || hasAuthority('ADMIN')")
+    public TaskDto create(@PathVariable long todoId, @Valid @RequestBody TaskDto taskDto) {
         Task task = TaskTransformer.convertToEntity(
                 taskDto,
-                todoService.readById(taskDto.getTodoId()),
+                todoService.readById(todoId),
                 stateService.getByName("New")
         );
         task = taskService.create(task);
@@ -40,15 +40,15 @@ public class TaskRestController {
     }
 
     @GetMapping("/{taskId}")
-//    @PreAuthorize("@toDoController.getToDoReadingLevel(#taskDto.todoId) <= 1 || hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public TaskDto read(@PathVariable long taskId) {
         Task task = taskService.readById(taskId);
         return TaskTransformer.convertToDto(task);
     }
 
-    @PutMapping("/{taskId}")
-//    @PreAuthorize("@toDoController.getToDoReadingLevel(#taskDto.todoId) <= 1 || hasAuthority('ADMIN')")
-    public TaskDto update(@PathVariable long taskId, @Valid @RequestBody TaskDto taskDto) {
+    @PutMapping("/{todoId}/{taskId}")
+    @PreAuthorize("@toDoRestController.getToDoReadingLevel(#todoId) <= 1 || hasAuthority('ADMIN')")
+    public TaskDto update(@PathVariable long todoId, @PathVariable long taskId, @Valid @RequestBody TaskDto taskDto) {
         if (taskId != taskDto.getId()) {
             throw new IllegalArgumentException("id cannot be changed");
         }
@@ -62,9 +62,9 @@ public class TaskRestController {
         return taskDto;
     }
 
-    @DeleteMapping("/{taskId}")
-//    @PreAuthorize("@toDoController.getToDoReadingLevel(#taskDto.todoId) <= 1 || hasAuthority('ADMIN')")
-    public void delete(@PathVariable long taskId) {
+    @DeleteMapping("/{todoId}/{taskId}")
+    @PreAuthorize("@toDoRestController.getToDoReadingLevel(#todoId) <= 1 || hasAuthority('ADMIN')")
+    public void delete(@PathVariable long todoId, @PathVariable long taskId) {
         taskService.delete(taskId);
     }
 }

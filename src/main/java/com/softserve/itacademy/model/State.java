@@ -1,5 +1,7 @@
 package com.softserve.itacademy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -16,6 +18,7 @@ public class State {
     private String name;
 
     @OneToMany(mappedBy = "state")
+    @JsonIgnore
     private List<Task> tasks;
 
     public State() {

@@ -1,5 +1,7 @@
 package com.softserve.itacademy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,6 +22,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "todo_id")
+    @JsonIgnore
     private ToDo todo;
 
     @ManyToOne

@@ -16,7 +16,8 @@ public class UserTransformer {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
-                user.getRole().getId()
+                user.getRole().getId(),
+                user.getRole().getName()
         );
     }
 
