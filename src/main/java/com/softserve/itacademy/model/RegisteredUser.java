@@ -13,10 +13,10 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @ToString
-public class UserToken {
+public class RegisteredUser {
     @Id
     @Column(name = "user_id")
-    private long vehicleId;
+    private Long userId;
 
     @OneToOne
     @PrimaryKeyJoinColumn(name="user_id", referencedColumnName="id")
